@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+    tools{
+        jdk 'JAVA_HOME'
+        maven 'MAVEN_HOME'
+    }
+    stages {
+        stage('git repo & clean') {
+            steps {
+                //bat "rmdir /s /q Harshitha_Jenkins_Maven || exit 0"
+                bat "git clone repo"
+                bat "mvn clean -f root/pom.xml"
+            }
+        }
+        stage('install') {
+            steps {
+                bat "mvn install -f root/pom.xml" 
+            }
+        }
+        stage('test') {
+            steps {
+                bat "mvn test -f root/pom.xml"
+            }
+        }
+        stage('package') {
+            steps {
+                bat "mvn package -f root/pom.xml"
+            }
+        }
+    }
+}
